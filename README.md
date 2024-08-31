@@ -2,37 +2,58 @@
 
 
 ### Diagrama de Classe:
-classDiagram
-class User {
-+Long id
-+String name
-+String email
-+List~Package~ packages
-}
 
 ```mermaid
-class Pacage {
-        <<abstract>>
-        +Long id
-        +String name
-        +double price
-        +User user
+classDiagram
+    class User {
+        -Long id
+        -String name
+        -String email
+        -String cpf
+        -Endereco endereco
+        -List~Package~ packages
+    }
+
+    class Endereco {
+        -String rua
+        -String numero
+        -String cidade
+        -String estado
+        -String cep
+    }
+
+    class Package {
+        <<interface>>
     }
 
     class MobilePackage {
-        +int dataLimit
+        -Long id
+        -String name
+        -double price
+        -User user
+        -int dataLimit
     }
 
     class TVPackage {
-        +int channelCount
+        -Long id
+        -String name
+        -double price
+        -User user
+        -int channelCount
     }
 
     class BroadbandPackage {
-        +int speed
+        -Long id
+        -String name
+        -double price
+        -User user
+        -int speed
     }
 
     User "1" --> "0..*" Package : possui
-    Package <|-- MobilePackage : extends
-    Package <|-- TVPackage : extends
-    Package <|-- BroadbandPackage : extends
+    User *-- Endereco : tem um
+    Package <|.. MobilePackage : implements
+    Package <|.. TVPackage : implements
+    Package <|.. BroadbandPackage : implements
+
 ```
