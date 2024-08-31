@@ -11,7 +11,7 @@ classDiagram
         -String email
         -String cpf
         -Endereco endereco
-        -List~Package~ packages
+        -List~ServicePackage~ packages
     }
 
     class Endereco {
@@ -22,7 +22,7 @@ classDiagram
         -String cep
     }
 
-    class Package {
+    class ServicePackage {
         <<interface>>
     }
 
@@ -50,10 +50,9 @@ classDiagram
         -int speed
     }
 
-    User "1" --> "0..*" Package : possui
+    User "1" --> "0..*" ServicePackage : possui
     User *-- Endereco : tem um
-    Package <|.. MobilePackage : implements
-    Package <|.. TVPackage : implements
-    Package <|.. BroadbandPackage : implements
-
+    ServicePackage <|.. MobilePackage : implements
+    ServicePackage <|.. TVPackage : implements
+    ServicePackage <|.. BroadbandPackage : implements
 ```
