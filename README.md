@@ -10,16 +10,16 @@ classDiagram
         -String name
         -String email
         -String cpf
-        -Endereco endereco
+        -Address address
         -List~ServicePackage~ packages
     }
 
-    class Endereco {
-        -String rua
-        -String numero
-        -String cidade
-        -String estado
-        -String cep
+    class Address {
+        -String street
+        -String number
+        -String city
+        -String state
+        -String zipCode
     }
 
     class ServicePackage {
@@ -51,7 +51,7 @@ classDiagram
     }
 
     User "1" --> "0..*" ServicePackage : possui
-    User *-- Endereco : tem um
+    User "0..*" -- "1" Address : resides at
     ServicePackage <|.. MobilePackage : implements
     ServicePackage <|.. TVPackage : implements
     ServicePackage <|.. BroadbandPackage : implements
