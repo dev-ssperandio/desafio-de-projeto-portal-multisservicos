@@ -51,7 +51,7 @@ classDiagram
     }
 
     User "1" --> "0..*" ServicePackage : possui
-    User *-- Address : has one
+    User "0..*" -- "1" Address : resides at
     ServicePackage <|.. MobilePackage : implements
     ServicePackage <|.. TVPackage : implements
     ServicePackage <|.. BroadbandPackage : implements
