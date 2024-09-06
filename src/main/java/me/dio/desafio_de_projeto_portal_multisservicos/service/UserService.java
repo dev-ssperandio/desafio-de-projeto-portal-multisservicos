@@ -9,45 +9,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-@Service
-public class UserService {
+public interface UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    User createUser(User user);
 
-    // create/ read/ update/ delete
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
+    List<User> findAllUsers();
 
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
-    }
+    User findUserById(Long id);
 
-    public Optional<User> findUserById(Long id) {
-        return userRepository.findById(id);
-    }
+    User updateUser(Long id, User user);
 
-    public User updateUser(Long id, User user) {
-        Optional<User> userToUpdate = findUserById(id);
-        if (userToUpdate.isPresent()) {
-            User userToSave = userToUpdate.get();
-            userToSave.setName(user.getName());
-            userToSave.setCpf(user.getCpf());
-            userToSave.setAddress(user.getAddress());
-            userToSave.setPackages(user.getPackages());
-            return userRepository.save(userToSave);
-        } else {
-            throw new NoSuchElementException("Usuário não encontrado");
-        }
-    }
-
-    public void deleteUserById(Long id) {
-        Optional<User> userToDelete = findUserById(id);
-        if (userToDelete.isPresent()) {
-            userRepository.deleteById(id);
-        } else {
-            throw new NoSuchElementException("Usuário não encontrado");
-        }
-    }
+    void deleteUserById(Long id);
 }

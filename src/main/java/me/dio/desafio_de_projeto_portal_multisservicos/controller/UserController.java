@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -21,26 +22,29 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User savedUser = userService.createUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(savedUser);
     }
 
     @GetMapping
     public ResponseEntity<List<User>> findAllUsers() {
         List<User> users = userService.findAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) {
-        User userFound = userService.findUserById(id)
-                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
-        return new ResponseEntity<>(userFound, HttpStatus.OK);
+        User userFound = userService.findUserById(id);
+        return ResponseEntity.ok(userFound);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         User userUpdated = userService.updateUser(id, user);
-        return new ResponseEntity<>(userUpdated, HttpStatus.OK);
+        return ResponseEntity.ok(userUpdated);
     }
 
     @DeleteMapping("/{id}")

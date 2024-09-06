@@ -10,4 +10,12 @@ public class BroadbandPackage extends ServicePackage {
 
     @Column(precision = 6, scale = 2, nullable = false)
     private BigDecimal speed;
+
+    public BigDecimal getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(BigDecimal speed) {
+        this.speed = speed;
+    }
 }

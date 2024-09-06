@@ -6,6 +6,14 @@ import jakarta.persistence.Entity;
 @Entity(name = "tb_mobile_package")
 public class MobilePackage extends ServicePackage {
 
-    @Column()
-    private int dataLimit;
+    @Column(precision = 6, scale = 2, nullable = false)
+    private int mobileDataPlan;
+
+    public int getMobileDataPlan() {
+        return mobileDataPlan;
+    }
+
+    public void setDataLimit(int mobileDataPlan) {
+        this.mobileDataPlan = mobileDataPlan;
+    }
 }
