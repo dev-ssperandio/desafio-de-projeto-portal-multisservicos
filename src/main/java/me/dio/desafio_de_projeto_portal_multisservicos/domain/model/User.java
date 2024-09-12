@@ -13,12 +13,12 @@ public class User {
     @Column(length = 50, nullable = false)
     private String name;
 
-    @Column(length = 11, nullable = false)
+    @Column(length = 11, nullable = false, unique = true)
     private String cpf;
 
-    //@ManyToOne
-    //@JoinColumn(name = "address_id")
-    @OneToOne
+    @ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "address_id")
+    //@OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
     @OneToMany(/*mappedBy = "user",*/ cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

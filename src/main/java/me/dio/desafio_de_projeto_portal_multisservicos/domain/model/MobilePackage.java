@@ -13,7 +13,7 @@ public class MobilePackage extends ServicePackage {
         return mobileDataPlan;
     }
 
-    public void setDataLimit(int mobileDataPlan) {
+    public void setMobileDataPlan(int mobileDataPlan) {
         this.mobileDataPlan = mobileDataPlan;
     }
 }
