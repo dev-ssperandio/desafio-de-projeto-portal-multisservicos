@@ -16,8 +16,8 @@ import java.time.ZoneId;
         @JsonSubTypes.Type(value = TVPackage.class, name = "tv"),
         @JsonSubTypes.Type(value = BroadbandPackage.class, name = "broadband")
 })
-//@MappedSuperclass
 public abstract class ServicePackage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,12 +29,8 @@ public abstract class ServicePackage {
     private BigDecimal price;
 
     @Column
-    private LocalDate limitDate = LocalDate.now(ZoneId.systemDefault()).plusDays(30);
+    private LocalDate contractDate; // = LocalDate.now(ZoneId.systemDefault()).plusDays(30);
 
-
-    /*@ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;*/
 
     public Long getId() {
         return id;
@@ -56,19 +52,18 @@ public abstract class ServicePackage {
         this.price = price;
     }
 
-    public LocalDate getLimitDate() {
-        return limitDate;
+    public LocalDate getContractDate() {
+        return contractDate;
     }
 
-    public void setLimitDate(LocalDate limitDate) {
-        this.limitDate = limitDate;
+    public void setContractDate(LocalDate contractDate) {
+        LocalDate today = LocalDate.now();
+
+        if (contractDate.isBefore(today)) {
+            throw new IllegalArgumentException("A data de contrato do serviço não pode ser anterior à data atual.");
+        }
+
+        this.contractDate = contractDate.plusDays(30);
     }
 
-    /*public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }*/
 }

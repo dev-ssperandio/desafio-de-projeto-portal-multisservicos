@@ -1,7 +1,6 @@
 package me.dio.desafio_de_projeto_portal_multisservicos.service.impl;
 
-import me.dio.desafio_de_projeto_portal_multisservicos.domain.model.Address;
-import me.dio.desafio_de_projeto_portal_multisservicos.domain.model.User;
+import me.dio.desafio_de_projeto_portal_multisservicos.domain.model.*;
 import me.dio.desafio_de_projeto_portal_multisservicos.domain.repository.AddressRepository;
 import me.dio.desafio_de_projeto_portal_multisservicos.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +31,14 @@ public class UserServiceImpl implements me.dio.desafio_de_projeto_portal_multiss
                 user.getAddress().getNumber()
         );
 
-        //existingAddress.ifPresent(user::setAddress);
         if (existingAddress.isPresent()) {
             user.setAddress(existingAddress.get());
         } else {
             Address newAddress = addressRepository.save(user.getAddress());
             user.setAddress(newAddress);
         }
+
+        checkForDuplicateServices(user);
 
         return userRepository.save(user);
     }
@@ -71,10 +71,12 @@ public class UserServiceImpl implements me.dio.desafio_de_projeto_portal_multiss
             userToUpdate.setAddress(newAddress);
         }
 
+        checkForDuplicateServices(user);
+
         userToUpdate.setName(user.getName());
         userToUpdate.setCpf(user.getCpf());
-        //userToUpdate.setAddress(user.getAddress());
         userToUpdate.setPackages(user.getPackages());
+
         return this.userRepository.save(userToUpdate);
     }
 
@@ -82,5 +84,31 @@ public class UserServiceImpl implements me.dio.desafio_de_projeto_portal_multiss
     public void deleteUserById(Long id) {
         User userToDelete = findUserById(id);
         this.userRepository.deleteById(id);
+    }
+
+    private void checkForDuplicateServices(User user) {
+        for (ServicePackage servicePackage : user.getPackages()) {
+            if (servicePackage instanceof BroadbandPackage || servicePackage instanceof TVPackage) {
+                for (ServicePackage existingPackage : user.getPackages()) {
+                    if (existingPackage != servicePackage &&
+                            ((existingPackage instanceof BroadbandPackage && servicePackage instanceof BroadbandPackage) ||
+                                    (existingPackage instanceof TVPackage && servicePackage instanceof TVPackage))) {
+                        throw new IllegalArgumentException("O usuário já possui um serviço de " + servicePackage.getClass().getSimpleName() + ".");
+                    }
+                }
+                List<User> usersAtSameAddress = userRepository.findByAddress(user.getAddress());
+                for (User existingUser : usersAtSameAddress) {
+                    if  (!existingUser.getId().equals(user.getId())) {
+                        
+                        for (ServicePackage existingPackage : existingUser.getPackages()) {
+                            if ((existingPackage instanceof BroadbandPackage && servicePackage instanceof BroadbandPackage) ||
+                                    (existingPackage instanceof TVPackage && servicePackage instanceof TVPackage)) {
+                                throw new IllegalArgumentException("Já existe um serviço de " + servicePackage.getClass().getSimpleName() + " registrado para este endereço.");
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

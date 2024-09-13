@@ -6,6 +6,7 @@ import java.util.List;
 
 @Entity(name = "tb_address")
 public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

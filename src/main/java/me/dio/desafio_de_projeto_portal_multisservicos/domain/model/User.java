@@ -6,6 +6,7 @@ import java.util.List;
 
 @Entity(name = "tb_user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +22,7 @@ public class User {
     //@OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    @OneToMany(/*mappedBy = "user",*/ cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ServicePackage> packages;
 
     /*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
