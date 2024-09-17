@@ -18,4 +18,5 @@ public class BroadbandPackage extends ServicePackage {
     public void setSpeed(BigDecimal speed) {
         this.speed = speed;
     }
+
 }

@@ -9,15 +9,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public interface UserService {
+public interface UserService extends CrudService<Long, User> {
 
-    User createUser(User user);
-
-    List<User> findAllUsers();
-
-    User findUserById(Long id);
-
-    User updateUser(Long id, User user);
-
-    void deleteUserById(Long id);
 }

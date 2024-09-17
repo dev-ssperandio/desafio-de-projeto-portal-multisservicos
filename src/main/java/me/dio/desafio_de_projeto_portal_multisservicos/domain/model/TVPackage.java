@@ -16,4 +16,5 @@ public class TVPackage extends ServicePackage {
     public void setChannelCount(int channelCount) {
         this.channelCount = channelCount;
     }
+
 }

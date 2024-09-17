@@ -17,22 +17,12 @@ public class User {
     @Column(length = 11, nullable = false, unique = true)
     private String cpf;
 
-    @ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "address_id")
-    //@OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ServicePackage> packages;
-
-    /*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<MobilePackage> mobilePackages;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<TVPackage> tvPackages;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<BroadbandPackage> broadbandPackages;*/
 
     public Long getId() {
         return id;
@@ -70,27 +60,4 @@ public class User {
         this.packages = packages;
     }
 
-    /*public List<MobilePackage> getMobilePackages() {
-        return mobilePackages;
-    }
-
-    public void setMobilePackages(List<MobilePackage> mobilePackages) {
-        this.mobilePackages = mobilePackages;
-    }
-
-    public List<TVPackage> getTvPackages() {
-        return tvPackages;
-    }
-
-    public void setTvPackages(List<TVPackage> tvPackages) {
-        this.tvPackages = tvPackages;
-    }
-
-    public List<BroadbandPackage> getBroadbandPackages() {
-        return broadbandPackages;
-    }
-
-    public void setBroadbandPackages(List<BroadbandPackage> broadbandPackages) {
-        this.broadbandPackages = broadbandPackages;
-    }*/
 }

@@ -3,15 +3,18 @@ package me.dio.desafio_de_projeto_portal_multisservicos.service.impl;
 import me.dio.desafio_de_projeto_portal_multisservicos.domain.model.*;
 import me.dio.desafio_de_projeto_portal_multisservicos.domain.repository.AddressRepository;
 import me.dio.desafio_de_projeto_portal_multisservicos.domain.repository.UserRepository;
+import me.dio.desafio_de_projeto_portal_multisservicos.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements me.dio.desafio_de_projeto_portal_multisservicos.service.UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -24,6 +27,8 @@ public class UserServiceImpl implements me.dio.desafio_de_projeto_portal_multiss
         if (userRepository.existsByCpf(user.getCpf())) {
             throw new IllegalArgumentException("Já existe um usuário cadastrado com o CPF: " + user.getCpf());
         }
+
+        checkCurrentDate(user.getPackages());
 
         Optional<Address> existingAddress = addressRepository.findByZipCodeAndStreetAndNumber(
                 user.getAddress().getZipCode(),
@@ -58,6 +63,8 @@ public class UserServiceImpl implements me.dio.desafio_de_projeto_portal_multiss
     public User updateUser(Long id, User user) {
         User userToUpdate = findUserById(id);
 
+        checkCurrentDate(user.getPackages());
+
         Optional<Address> existingAddress = this.addressRepository.findByZipCodeAndStreetAndNumber(
                 user.getAddress().getZipCode(),
                 user.getAddress().getStreet(),
@@ -84,6 +91,16 @@ public class UserServiceImpl implements me.dio.desafio_de_projeto_portal_multiss
     public void deleteUserById(Long id) {
         User userToDelete = findUserById(id);
         this.userRepository.deleteById(id);
+    }
+
+    private void checkCurrentDate(List<ServicePackage> servicePackages) {
+        LocalDate today = LocalDate.now(ZoneId.systemDefault()).minusDays(30);
+
+        for (ServicePackage servicePackage : servicePackages) {
+            if (servicePackage.getContractDate().isBefore(today)) {
+                throw new IllegalArgumentException("A data de contrato do serviço não pode ser anterior à data atual.");
+            }
+        }
     }
 
     private void checkForDuplicateServices(User user) {

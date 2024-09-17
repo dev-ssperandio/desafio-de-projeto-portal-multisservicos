@@ -29,8 +29,7 @@ public abstract class ServicePackage {
     private BigDecimal price;
 
     @Column
-    private LocalDate contractDate; // = LocalDate.now(ZoneId.systemDefault()).plusDays(30);
-
+    private LocalDate contractDate;
 
     public Long getId() {
         return id;
@@ -57,12 +56,6 @@ public abstract class ServicePackage {
     }
 
     public void setContractDate(LocalDate contractDate) {
-        LocalDate today = LocalDate.now();
-
-        if (contractDate.isBefore(today)) {
-            throw new IllegalArgumentException("A data de contrato do serviço não pode ser anterior à data atual.");
-        }
-
         this.contractDate = contractDate.plusDays(30);
     }
 

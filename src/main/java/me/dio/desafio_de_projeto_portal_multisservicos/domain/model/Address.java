@@ -2,8 +2,6 @@ package me.dio.desafio_de_projeto_portal_multisservicos.domain.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity(name = "tb_address")
 public class Address {
 
@@ -25,9 +23,6 @@ public class Address {
 
     @Column(length = 8, nullable = false)
     private String zipCode;
-
-    /*@OneToMany(mappedBy = "address")
-    private List<User> users;*/
 
     public Long getId() {
         return id;
@@ -72,4 +67,5 @@ public class Address {
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
+
 }

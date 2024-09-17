@@ -16,4 +16,5 @@ public class MobilePackage extends ServicePackage {
     public void setMobileDataPlan(int mobileDataPlan) {
         this.mobileDataPlan = mobileDataPlan;
     }
+
 }
