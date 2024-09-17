@@ -49,7 +49,7 @@ classDiagram
         -int channelCount
     }
 
-    User "1" --> "0..*" ServicePackage : possui
+    User "1" --> "0..*" ServicePackage : has
     User "0..*" -- "1" Address : resides at
     ServicePackage <|-- BroadbandPackage : extends
     ServicePackage <|-- MobilePackage : extends
