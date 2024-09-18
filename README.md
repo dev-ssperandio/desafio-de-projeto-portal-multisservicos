@@ -50,7 +50,7 @@ classDiagram
     }
 
     User "1" --> "0..*" ServicePackage : has
-    User "0..*" -- "1" Address : resides at
+    User "1..*" -- "1" Address : resides at
     ServicePackage <|-- BroadbandPackage : extends
     ServicePackage <|-- MobilePackage : extends
     ServicePackage <|-- TVPackage : extends
